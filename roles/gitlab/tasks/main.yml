@@ -1,0 +1,36 @@
+---
+
+- name: Install prerequisites packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - postfix
+    - apt-transport-https
+
+- name: Install GitLab GPG key
+  apt_key:
+    state: present
+    url: "{{ gitlab_gpg_key }}"
+
+- name: Add sources list
+  apt_repository:
+    repo: "{{ gitlab_repository }}"
+    state: present
+
+- name: Install GitLab CE
+  apt:
+    name: "gitlab-ce={{ gitlab_version }}{{ gitlab_version_suffix }}"
+    state: present
+    update_cache: yes
+  notify:
+    - reconfigure gitlab
+    - restart gitlab
+    - wait for unicorn
+
+- name: Start and enable mail
+  service:
+    name: postfix
+    enabled: yes
+    state: started
