@@ -28,9 +28,17 @@
     - reconfigure gitlab
     - restart gitlab
     - wait for unicorn
+    - start postfix
 
-- name: Start and enable mail
-  service:
-    name: postfix
-    enabled: yes
-    state: started
+- name: Configure Gitlab
+  template:
+    src: "etc/gitlab/gitlab.rb.j2"
+    dest: "/etc/gitlab/gitlab.rb"
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reconfigure gitlab
+    - restart gitlab
+  tags:
+    - config

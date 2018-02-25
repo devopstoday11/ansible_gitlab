@@ -6,3 +6,5 @@ gitlab_gpg_key: "https://packages.gitlab.com/gitlab/{{ gitlab_package }}/gpgkey"
 gitlab_repository: "deb https://packages.gitlab.com/gitlab/{{ gitlab_package }}/{{ ansible_lsb.id | lower }}/ {{ ansible_lsb.codename }} main"
 gitlab_version: "10.5.1"
 gitlab_version_suffix: "-ce.0"
+
+gitlab_external_url: http://gitlab.example.com
