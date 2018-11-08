@@ -38,7 +38,7 @@ Current machine states:
 gitlab01                   running (virtualbox)
 ```
 
-If everything run has expected, you should access the Gitlab Web interface : http://10.0.1.71/
+If everything run has expected, you should access the Gitlab Web interface : http://10.0.5.71/
 
 #### Destroy
 
