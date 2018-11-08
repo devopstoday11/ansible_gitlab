@@ -1,36 +1,14 @@
 ---
 
-- name: Install prerequisites packages
-  apt:
-    name: "{{ item }}"
-    state: present
-    update_cache: yes
-  with_items:
-    - postfix
-    - apt-transport-https
+- name: GITLAB | Manage Debian environment
+  import_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
 
-- name: Install GitLab GPG key
-  apt_key:
-    state: present
-    url: "{{ gitlab_gpg_key }}"
+- name: GITLAB | Manage RedHat environment
+  import_tasks: redhat.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: Add sources list
-  apt_repository:
-    repo: "{{ gitlab_repository }}"
-    state: present
-
-- name: Install GitLab CE
-  apt:
-    name: "gitlab-ce={{ gitlab_version }}{{ gitlab_version_suffix }}"
-    state: present
-    update_cache: yes
-  notify:
-    - reconfigure gitlab
-    - restart gitlab
-    - wait for unicorn
-    - start postfix
-
-- name: Configure Gitlab
+- name: GITLAB | Configure Gitlab
   template:
     src: "etc/gitlab/gitlab.rb.j2"
     dest: "/etc/gitlab/gitlab.rb"
@@ -40,5 +18,3 @@
   notify:
     - reconfigure gitlab
     - restart gitlab
-  tags:
-    - config

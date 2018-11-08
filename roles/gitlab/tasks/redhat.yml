@@ -1,0 +1,34 @@
+---
+
+- name: GITLAB ON REDHAT | Install prerequisites packages
+  package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - curl
+    - policycoreutils-python
+    - openssh-server
+    - postfix
+
+- name: GITLAB ON REDHAT | Get repository script
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/{{ gitlab_package }}/script.rpm.sh
+    dest: /tmp/{{ gitlab_package }}-rpm.sh
+    owner: root
+    group: root
+    mode: 0744
+
+- name: GITLAB ON REDHAT | Install repository
+  shell: /tmp/{{ gitlab_package }}-rpm.sh
+
+- name: GITLAB ON REDHAT | Installation
+  package:
+    name: "{{ gitlab_yum_package_name }}"
+    state: present
+    update_cache: true
+  notify:
+    - reconfigure gitlab
+    - restart gitlab
+    - wait for unicorn
+    - start postfix

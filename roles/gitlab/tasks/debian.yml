@@ -1,0 +1,31 @@
+---
+
+- name: GITLAB ON DEBIAN | Install prerequisites packages
+  package:
+    name:
+      - postfix
+      - apt-transport-https
+    state: present
+    update_cache: true
+
+- name: GITLAB ON DEBIAN | Get repository script
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/{{ gitlab_package }}/script.deb.sh
+    dest: /tmp/{{ gitlab_package }}-deb.sh
+    owner: root
+    group: root
+    mode: 0744
+
+- name: GITLAB ON DEBIAN | Install repository
+  shell: /tmp/{{ gitlab_package }}-deb.sh
+
+- name: GITLAB ON DEBIAN | Installation
+  package:
+    name: "{{ gitlab_apt_package_name }}"
+    state: present
+    update_cache: true
+  notify:
+    - reconfigure gitlab
+    - restart gitlab
+    - wait for unicorn
+    - start postfix

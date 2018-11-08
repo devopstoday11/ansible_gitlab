@@ -19,5 +19,5 @@
 - name: start postfix
   systemd:
     name: postfix
-    enabled: yes
+    enabled: true
     state: started
