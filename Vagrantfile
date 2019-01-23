@@ -14,7 +14,7 @@ $num_instances          = 1
 $instance_name_prefix   = "gitlab"
 $vm_memory              = 4096
 $vm_cpus                = 2
-$subnet                 = "10.0.5.7" # For 10.0.4.4X
+$subnet                 = "10.0.5.7" # For 10.0.5.7X
 $box                    = SUPPORTED_OS[$os][:box]
 
 # Ansible provisioner
