@@ -3,13 +3,13 @@
 
 # List of supported operating systems
 SUPPORTED_OS = {
-  "debian"   => {box: "debian/jessie64", bootstrap_os: "debian", user: "vagrant"},
+  "debian"   => {box: "debian/stretch64", bootstrap_os: "debian", user: "vagrant"},
   "ubuntu"   => {box: "ubuntu/bionic64", bootstrap_os: "ubuntu", user: "vagrant"},
   "centos"   => {box: "centos/7",        bootstrap_os: "centos", user: "vagrant"}
 }
 
 # Vagrant instance management
-$os                     = "ubuntu"
+$os                     = "centos"
 $num_instances          = 1
 $instance_name_prefix   = "gitlab"
 $vm_memory              = 4096
