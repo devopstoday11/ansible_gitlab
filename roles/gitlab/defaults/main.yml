@@ -6,7 +6,7 @@
 
 # Generalities
 gitlab_package: gitlab-ce
-gitlab_version: "11.8.1"
+gitlab_version: "11.9.0"
 
 # Redhat
 gitlab_yum_version_suffix: "-ce.0.el7"
