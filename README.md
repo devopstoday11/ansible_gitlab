@@ -40,6 +40,10 @@ gitlab01                   running (virtualbox)
 
 If everything run has expected, you should access the Gitlab Web interface : http://10.0.5.71/
 
+The root login should be : root / T6MHqKfg
+
+A best practice in Ansible is to use Vault to manage secrets.
+
 #### Destroy
 
 To destroy the Vagrant resources created, just run this command :
