@@ -1,6 +1,6 @@
 # Ansible : Playbook Gitlab
 
-The aim of this project is to deploy a Gitlab instance on Vagrant instance.
+The aim of this project is to deploy Gitlab on Vagrant instances.
 
 ## Getting Started
 
@@ -13,6 +13,11 @@ What things you need to run this Ansible playbook :
 *   [Vagrant](https://www.vagrantup.com/docs/installation/) must be installed on your computer
 *   Update the Vagrant file based on your computer (CPU, memory), if needed
 *   Update the operating system to deploy in the Vagrant file (default: Ubuntu)
+*   Download the Ansible requirements:
+
+```bash
+$ ansible-galaxy install -r requirements.yml
+```
 
 ### Usage
 
@@ -20,29 +25,43 @@ A good point with Vagrant is that you can create, update and destroy all archite
 
 Be aware that you need to be in the Vagrant directory to be able to run the commands.
 
-#### Deployment
+#### Baremetal Deployment
 
-To deploy Gitlab on Vagrant instance, just run this command :
+To deploy the Gitlab client on baremetal, you have to configure the variable *gitlab_install_type* to *baremetal* in the file gitlab.yml before running the playbook :
+
+```yaml
+[...]
+vars:
+  gitlab_install_type: baremetal
+[...]
+```
+
+Once it's done, you just have to provision the Vagrant instance and the Ansible playbook will automatically be called :
 
 ```bash
 $ vagrant up
 ```
 
-If everything run as expected, you should be able to list the virtual machine created :
+If everything run has expected, you should be able to reach the web interface : http://10.0.0.11/
 
-```bash
-$ vagrant status
+#### Docker Deployment
 
-Current machine states:
+To deploy the Gitlab client on Docker, you have to configure the variable *gitlab_install_type* to *docker* in the file gitlab.yml before running the playbook :
 
-gitlab01                   running (virtualbox)
+```yaml
+[...]
+vars:
+  gitlab_install_type: docker
+[...]
 ```
 
-If everything run has expected, you should access the Gitlab Web interface : http://10.0.5.71/
+Once it's done, you just have to provision the Vagrant instance and the Ansible playbook will automatically be called :
 
-The root login should be : root / T6MHqKfg
+```bash
+$ vagrant up
+```
 
-A best practice in Ansible is to use Vault to manage secrets.
+If everything run has expected, you should be able to reach the web interface : http://10.0.0.11/
 
 #### Destroy
 
@@ -58,7 +77,7 @@ This section list some simple command to use and manage the playbook and the Vag
 
 #### Update with Ansible
 
-To update the Gitlab instance configuration with Ansible, you just have to run the Ansible playbook gitlab.yml with this command :
+To update the Gitlab configuration with Ansible, you just have to run the Ansible playbook gitlab.yml with this command :
 
 ```bash
 $ ansible-playbook gitlab.yml
@@ -66,7 +85,7 @@ $ ansible-playbook gitlab.yml
 
 #### Update with Vagrant
 
-To update the Gitlab instance configuration with Vagrant, you just have to run provisioning part of the Vagrant file :
+To update the Gitlab configuration with Vagrant, you just have to run provisioning part of the Vagrant file :
 
 ```bash
 $ vagrant provision
