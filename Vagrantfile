@@ -4,8 +4,8 @@
 # List of supported operating systems
 SUPPORTED_OS = {
   "debian"   => {box: "debian/stretch64", bootstrap_os: "debian", user: "vagrant"},
-  "ubuntu"   => {box: "ubuntu/bionic64", bootstrap_os: "ubuntu", user: "vagrant"},
-  "centos"   => {box: "centos/7",        bootstrap_os: "centos", user: "vagrant"}
+  "ubuntu"   => {box: "ubuntu/bionic64",  bootstrap_os: "ubuntu", user: "vagrant"},
+  "centos"   => {box: "centos/7",         bootstrap_os: "centos", user: "vagrant"}
 }
 
 # Vagrant instance management
@@ -14,7 +14,7 @@ $num_instances          = 1
 $instance_name_prefix   = "gitlab"
 $vm_memory              = 4096
 $vm_cpus                = 2
-$subnet                 = "10.0.5.7" # For 10.0.5.7X
+$subnet                 = "10.0.0.1" # For 10.0.0.1X
 $box                    = SUPPORTED_OS[$os][:box]
 
 # Ansible provisioner
@@ -50,16 +50,16 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.define vm_name = "%s%02d" % [$instance_name_prefix, i] do |server|
-      config.vm.hostname = vm_name
+      server.vm.hostname = vm_name
       server.vm.network "private_network", ip: "#{$subnet}#{i}"
 
       # Provision
-      config.vm.provision "shell", path: "provision.sh"
-      # config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/home/vagrant/.ssh/authorized_keys"
+      server.vm.provision "shell", path: "provision.sh"
+      # server.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/home/vagrant/.ssh/authorized_keys"
 
       # Only execute the Ansible provisioner when all the machines are up and ready
       if i == $num_instances
-        config.vm.provision "ansible" do |ansible|
+        server.vm.provision "ansible" do |ansible|
           ansible.compatibility_mode  = "2.0"
           ansible.playbook            = $playbook
           if File.exist?(File.join(File.dirname($inventory), "hosts"))
