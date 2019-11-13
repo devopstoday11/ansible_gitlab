@@ -1,0 +1,44 @@
+---
+
+###
+# GITLAB
+###
+
+# Version
+gitlab_version: latest
+
+# Directories
+gitlab_conf_dir: /opt/gitlab/config
+gitlab_logs_dir: /opt/gitlab/logs
+gitlab_data_dir: /opt/gitlab/data
+
+# Configuration
+gitlab_external_url: http://gitlab.wikitops.io
+gitlab_initial_root_password: "T6MHqKfg" # Don't forget to encrypt this value
+
+###
+# DOCKER
+###
+
+# Network
+gitlab_docker_network:
+  name: gitlab
+  state: present
+
+# Stack
+gitlab_docker:
+  env:
+    GITLAB_OMNIBUS_CONFIG: "external_url 'http://{{ gitlab_external_url }}/'; gitlab_rails['initial_root_password'] = '{{ gitlab_initial_root_password }}';"
+  name: gitlab
+  hostname: gitlab.example.com
+  image: gitlab/gitlab-ce:{{ gitlab_version }}
+  state: started
+  network: gitlab
+  ports:
+    - 443:443
+    - 80:80
+    - 22:22
+  volumes:
+    - "{{ gitlab_conf_dir }}:/etc/gitlab"
+    - "{{ gitlab_logs_dir }}:/var/log/gitlab"
+    - "{{ gitlab_data_dir }}:/var/opt/gitlab"

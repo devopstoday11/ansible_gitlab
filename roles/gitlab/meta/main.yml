@@ -1,0 +1,9 @@
+---
+
+dependencies:
+
+  - role: gitlab/baremetal
+    when: gitlab_install_type == "baremetal"
+
+  - role: gitlab/docker
+    when: gitlab_install_type == "docker"

@@ -3,5 +3,7 @@
 - hosts: gitlab
   remote_user: vagrant
   become: yes
+  vars:
+    gitlab_install_type: baremetal # baremetal / docker
   roles:
     - gitlab

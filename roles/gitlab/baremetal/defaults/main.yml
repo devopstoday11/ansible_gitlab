@@ -6,7 +6,7 @@
 
 # Generalities
 gitlab_package: gitlab-ce
-gitlab_version: "11.9.0"
+gitlab_version: "12.4.2"
 
 # Redhat
 gitlab_yum_version_suffix: "-ce.0.el7"
@@ -18,4 +18,4 @@ gitlab_apt_version_suffix: "-ce.0"
 
 # Configuration
 gitlab_external_url: http://gitlab.wikitops.io
-gitlab_initial_root_password: "T6MHqKfg"
+gitlab_initial_root_password: "T6MHqKfg" # Don't forget to encrypt this value

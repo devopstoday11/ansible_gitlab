@@ -1,0 +1,7 @@
+---
+
+dependencies:
+
+  - role: docker
+    vars:
+      docker_users: ["vagrant"]

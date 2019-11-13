@@ -1,0 +1,31 @@
+---
+
+- name: GITLAB ON DOCKER | Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - "{{ gitlab_conf_dir }}"
+    - "{{ gitlab_logs_dir }}"
+    - "{{ gitlab_data_dir }}"
+
+- name: GITLAB ON DOCKER | Create the network
+  docker_network:
+    name: "{{ gitlab_docker_network.name }}"
+    state: "{{ gitlab_docker_network.state }}"
+
+- name: GITLAB ON DOCKER | Deploy the container
+  docker_container:
+    env: "{{ gitlab_docker.env }}"
+    name: "{{ gitlab_docker.name }}"
+    hostname: "{{ gitlab_docker.hostname }}"
+    image: "{{ gitlab_docker.image }}"
+    state: "{{ gitlab_docker.state }}"
+    restart: yes
+    networks:
+      - name: "{{ gitlab_docker.network }}"
+    ports: "{{ gitlab_docker.ports }}"
+    volumes: "{{ gitlab_docker.volumes }}"

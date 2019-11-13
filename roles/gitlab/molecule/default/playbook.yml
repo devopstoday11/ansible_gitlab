@@ -3,5 +3,7 @@
 - name: Converge
   hosts: all
   become: true
+  vars:
+    gitlab_install_type: baremetal # baremetal / docker
   roles:
     - role: gitlab
